@@ -15,9 +15,14 @@ from translations import T
 st.set_page_config(page_title="RadDose Review", page_icon="🩻", layout="wide")
 
 # ---------------- اللغة ----------------
-_, lang_col = st.columns([5, 2])
+DEFAULT_LANG = "ar"  # غيّرها إلى "en" لو عايز الموقع يفتح إنجليزي
+_default = st.query_params.get("lang", DEFAULT_LANG)  # الرابط ...?lang=en يفتح إنجليزي مباشرة
+_, lang_col = st.columns([3, 4])
 with lang_col:
-    choice = st.radio("lang", ["العربية", "English"], horizontal=True, label_visibility="collapsed")
+    choice = st.radio(
+        "🌐 Language / اللغة", ["العربية", "English"],
+        index=1 if _default == "en" else 0, horizontal=True,
+    )
 lang = "ar" if choice == "العربية" else "en"
 t = T[lang]
 rtl = lang == "ar"
@@ -30,6 +35,8 @@ st.markdown(
 html, body, .stApp, .stMarkdown, button, label, p, h1, h2, h3, h4, input, textarea
     {{ font-family: 'IBM Plex Sans Arabic', 'Segoe UI', sans-serif; }}
 #MainMenu, footer {{ visibility: hidden; }}
+[class*="viewerBadge"], [class*="_profileContainer"], [class*="_profilePreview"],
+[data-testid="appCreatorAvatar"], [data-testid="appCreatorLink"] {{ display: none !important; }}
 .block-container {{ padding-top: 1.2rem; max-width: 1100px; direction: {'rtl' if rtl else 'ltr'}; text-align: {'right' if rtl else 'left'}; }}
 input[type=number] {{ direction: ltr; text-align: {'right' if rtl else 'left'}; }}
 .hero {{ background: #0B2545; color: #fff; border-radius: 10px; padding: 1.4rem 1.6rem; margin-bottom: 1rem;
